@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#000000">
+<link rel="manifest" href="manifest.json">
+
+<title>Corilzon Jailbreak</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    margin: 0;
+    background: #000;
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+                 "Helvetica Neue", Arial, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.app {
+    min-height: 100vh;
+    max-width: 600px;
+    margin: auto;
+    padding: 25px 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.top {
+    text-align: center;
+    padding-top: 35px;
+}
+
+.logo {
+    width: 74px;
+    height: 74px;
+    border-radius: 20px;
+    background: #111;
+    border: 1px solid #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    font-size: 25px;
+    font-weight: 800;
+}
+
+h1 {
+    font-size: 30px;
+    margin: 18px 0 5px;
+}
+
+.version {
+    color: #888;
+    font-size: 14px;
+}
+
+.card {
+    margin-top: 35px;
+    background: #111;
+    border: 1px solid #292929;
+    border-radius: 18px;
+    padding: 22px;
+}
+
+.status {
+    font-size: 16px;
+    margin-bottom: 18px;
+}
+
+.button {
+    width: 100%;
+    border: 0;
+    border-radius: 13px;
+    padding: 15px;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    background: #fff;
+    color: #000;
+}
+
+.button:active {
+    transform: scale(.98);
+}
+
+.button.secondary {
+    background: #222;
+    color: #fff;
+    margin-top: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+.terminal {
+    margin-top: 18px;
+    background: #050505;
+    border: 1px solid #252525;
+    border-radius: 12px;
+    padding: 14px;
+    height: 250px;
+    overflow: hidden;
+    font-family: monospace;
+    font-size: 11px;
+    line-height: 1.45;
+    color: #aaa;
+}
+
+.progress {
+    height: 8px;
+    background: #292929;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 15px;
+}
+
+.progressBar {
+    width: 0%;
+    height: 100%;
+    background: #fff;
+    transition: width .15s;
+}
+
+.percent {
+    text-align: center;
+    color: #999;
+    font-size: 13px;
+    margin-top: 8px;
+}
+
+.success {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.successIcon {
+    font-size: 42px;
+    margin-bottom: 10px;
+}
+
+.success h2 {
+    margin: 5px 0;
+    font-size: 25px;
+}
+
+.success p {
+    color: #999;
+    line-height: 1.5;
+}
+
+.footer {
+    margin-top: auto;
+    text-align: center;
+    color: #555;
+    font-size: 12px;
+    padding: 30px 0 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <div class="top">
+
+        <div class="logo">
+            CZ
+        </div>
+
+        <h1>Corilzon</h1>
+
+        <div class="version">
+            iOS 27.0 • Corilzon Jailbreak
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        <div id="startScreen">
+
+            <div class="status">
+                Ready to start Corilzon.
+            </div>
+
+            <button class="button" id="jailbreakButton">
+                Jailbreak Now
+            </button>
+
+        </div>
+
+        <div id="jailbreakScreen" class="hidden">
+
+            <div class="status" id="jailbreakStatus">
+                Preparing...
+            </div>
+
+            <div class="terminal" id="terminal"></div>
+
+            <div class="progress">
+                <div class="progressBar" id="progressBar"></div>
+            </div>
+
+            <div class="percent" id="percent">
+                0%
+            </div>
+
+        </div>
+
+        <div id="successScreen" class="hidden">
+
+            <div class="success">
+
+                <div class="successIcon">
+                    ✨🔓
+                </div>
+
+                <h2>Jailbreak Success</h2>
+
+                <p>
+                    Corilzon environment initialized successfully.
+                </p>
+
+                <button class="button" id="settingsButton">
+                    Installa Corilzon Settings
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="footer">
+        Corilzon • Web Simulation
+    </div>
+
+</div>
+
+<script>
+
+const jailbreakButton =
+    document.getElementById("jailbreakButton");
+
+const startScreen =
+    document.getElementById("startScreen");
+
+const jailbreakScreen =
+    document.getElementById("jailbreakScreen");
+
+const successScreen =
+    document.getElementById("successScreen");
+
+const terminal =
+    document.getElementById("terminal");
+
+const progressBar =
+    document.getElementById("progressBar");
+
+const percent =
+    document.getElementById("percent");
+
+const jailbreakStatus =
+    document.getElementById("jailbreakStatus");
+
+const settingsButton =
+    document.getElementById("settingsButton");
+
+
+function randomLine() {
+
+    const commands = [
+        "initializing corilzon kernel...",
+        "checking system environment...",
+        "loading filesystem...",
+        "mounting CorilzonFS...",
+        "checking system services...",
+        "initializing developer environment...",
+        "loading boot configuration...",
+        "checking package subsystem...",
+        "initializing USB subsystem...",
+        "starting Corilzon services...",
+        "verifying system components...",
+        "loading configuration...",
+        "starting userspace...",
+        "finalizing environment..."
+    ];
+
+    return commands[
+        Math.floor(Math.random() * commands.length)
+    ];
+
+}
+
+
+function addTerminalLine() {
+
+    const line =
+        "[" +
+        Math.floor(Math.random() * 9999) +
+        "] " +
+        randomLine();
+
+    terminal.textContent +=
+        line + "\n";
+
+    terminal.scrollTop =
+        terminal.scrollHeight;
+
+}
+
+
+jailbreakButton.addEventListener(
+    "click",
+    function() {
+
+        startScreen.classList.add("hidden");
+        jailbreakScreen.classList.remove("hidden");
+
+        let progress = 0;
+
+        const timer =
+            setInterval(function() {
+
+                for (let i = 0; i < 4; i++) {
+                    addTerminalLine();
+                }
+
+                progress +=
+                    Math.floor(Math.random() * 5) + 1;
+
+                if (progress >= 100) {
+
+                    progress = 100;
+
+                    clearInterval(timer);
+
+                    progressBar.style.width =
+                        "100%";
+
+                    percent.textContent =
+                        "100%";
+
+                    jailbreakStatus.textContent =
+                        "Finalizing Corilzon...";
+
+                    setTimeout(function() {
+
+                        jailbreakScreen.classList.add(
+                            "hidden"
+                        );
+
+                        successScreen.classList.remove(
+                            "hidden"
+                        );
+
+                    }, 1000);
+
+                } else {
+
+                    progressBar.style.width =
+                        progress + "%";
+
+                    percent.textContent =
+                        progress + "%";
+
+                    jailbreakStatus.textContent =
+                        "Running Corilzon process...";
+
+                }
+
+            }, 180);
+
+    });
+
+
+settingsButton.addEventListener(
+    "click",
+    function() {
+
+        localStorage.setItem(
+            "corilzon_settings_installed",
+            "true"
+        );
+
+        window.location.href =
+            "settings.html";
+
+    }
+);
+
+</script>
+
+</body>
+</html>
