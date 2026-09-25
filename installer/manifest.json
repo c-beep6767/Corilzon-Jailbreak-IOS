@@ -1,0 +1,11 @@
+{
+    "name": "Colirzon",
+    "short_name": "Colirzon",
+    "description": "Colirzon Jailbreak",
+    "start_url": "../index.html",
+    "scope": "../",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#000000",
+    "theme_color": "#000000"
+}
