@@ -1,0 +1,2249 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#f2f2f7">
+<title>Corilizon Settings</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    background: #f2f2f7;
+    color: #111;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "SF Pro Text",
+        Arial,
+        sans-serif;
+}
+
+body {
+    min-height: 100vh;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button {
+    border: 0;
+    cursor: pointer;
+}
+
+#app {
+    min-height: 100vh;
+}
+
+.header {
+    padding-top: calc(env(safe-area-inset-top) + 16px);
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 14px;
+    background: rgba(242, 242, 247, 0.96);
+    border-bottom: 1px solid #d1d1d6;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-title {
+    margin: 0;
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.header-back {
+    display: block;
+    color: #007aff;
+    font-size: 17px;
+    margin-bottom: 7px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.content {
+    padding: 24px 16px 45px;
+}
+
+.section {
+    margin-bottom: 28px;
+}
+
+.section-title {
+    margin: 0 15px 8px;
+    color: #6e6e73;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.card {
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.03);
+}
+
+.row {
+    min-height: 56px;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e5e5ea;
+    cursor: pointer;
+}
+
+.row:last-child {
+    border-bottom: 0;
+}
+
+.row:active {
+    background: #e5e5ea;
+}
+
+.row-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.row-icon {
+    width: 31px;
+    height: 31px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: #111;
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.row-title {
+    font-size: 17px;
+}
+
+.arrow {
+    color: #8e8e93;
+    font-size: 24px;
+}
+
+.blue-button {
+    display: block;
+    width: 100%;
+    margin-top: 14px;
+    padding: 14px;
+    border-radius: 12px;
+    background: #007aff;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.blue-button:active {
+    opacity: 0.7;
+}
+
+.blue-button:disabled {
+    opacity: 0.5;
+}
+
+.gray-button {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    padding: 14px;
+    border-radius: 12px;
+    background: #e5e5ea;
+    color: #111;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.red-button {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    padding: 14px;
+    border-radius: 12px;
+    background: #ff3b30;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.box {
+    padding: 16px;
+}
+
+.status {
+    padding: 15px;
+    border-radius: 12px;
+    background: #f2f2f7;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.success {
+    color: #34c759;
+    font-weight: 600;
+}
+
+.warning {
+    color: #ff9500;
+    font-weight: 600;
+}
+
+.error {
+    color: #ff3b30;
+    font-weight: 600;
+}
+
+.description {
+    margin-top: 12px;
+    color: #6e6e73;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.file-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1d1d6;
+    border-radius: 12px;
+    background: white;
+}
+
+.url-input {
+    width: 100%;
+    margin-top: 10px;
+    padding: 13px;
+    border: 1px solid #d1d1d6;
+    border-radius: 12px;
+    background: white;
+    outline: none;
+}
+
+.progress-container {
+    display: none;
+    width: 100%;
+    height: 10px;
+    margin-top: 15px;
+    background: #d1d1d6;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    width: 0%;
+    height: 100%;
+    background: #007aff;
+    transition: width 0.12s linear;
+}
+
+.percent {
+    margin-top: 9px;
+    text-align: center;
+    font-size: 14px;
+    color: #6e6e73;
+}
+
+.package {
+    padding: 16px;
+    border-bottom: 1px solid #e5e5ea;
+}
+
+.package:last-child {
+    border-bottom: 0;
+}
+
+.package-name {
+    font-size: 17px;
+    font-weight: 600;
+    word-break: break-word;
+}
+
+.package-info {
+    margin-top: 4px;
+    color: #6e6e73;
+    font-size: 13px;
+}
+
+.package-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 11px;
+}
+
+.package-actions button {
+    flex: 1;
+    margin-top: 0;
+}
+
+.console {
+    margin-top: 14px;
+    padding: 14px;
+    border-radius: 12px;
+    background: #000;
+    color: #00ff66;
+    font-family: monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 16px;
+    border-bottom: 1px solid #e5e5ea;
+    font-size: 16px;
+}
+
+.info-row:last-child {
+    border-bottom: 0;
+}
+
+.info-value {
+    color: #6e6e73;
+    text-align: right;
+}
+</style>
+</head>
+
+<body>
+
+<div id="app"></div>
+
+<!-- =========================================================
+     CORILIZON CORE
+========================================================= -->
+
+<script src="./core/state.js"></script>
+<script src="./core/version.js"></script>
+<script src="./core/boot.js"></script>
+
+<script>
+"use strict";
+
+/* =========================================================
+   CORILIZON
+========================================================= */
+
+const DB_NAME = "CorilizonDatabase";
+const DB_VERSION = 1;
+const STORE_NAME = "packages";
+
+let database = null;
+let developerMode = false;
+let updateRunning = false;
+let installerRunning = false;
+
+
+/* =========================================================
+   CORE STATE
+========================================================= */
+
+function syncDeveloperModeFromCore() {
+
+    if (typeof loadCorilzonState !== "function") {
+        return;
+    }
+
+    try {
+
+        const coreState =
+            loadCorilzonState();
+
+        if (coreState) {
+
+            developerMode =
+                coreState.developerMode === true;
+        }
+
+    } catch (error) {
+
+        console.warn(
+            "Corilzon Core state non disponibile:",
+            error
+        );
+    }
+}
+
+
+/* =========================================================
+   DATABASE
+========================================================= */
+
+function initializeDatabase() {
+
+    return new Promise(function(resolve, reject) {
+
+        const request =
+            window.indexedDB.open(DB_NAME, DB_VERSION);
+
+        request.onupgradeneeded = function(event) {
+
+            const db = event.target.result;
+
+            if (!db.objectStoreNames.contains(STORE_NAME)) {
+
+                db.createObjectStore(
+                    STORE_NAME,
+                    {
+                        keyPath: "id",
+                        autoIncrement: true
+                    }
+                );
+            }
+        };
+
+        request.onsuccess = function(event) {
+
+            database = event.target.result;
+
+            resolve();
+        };
+
+        request.onerror = function() {
+
+            reject(request.error);
+        };
+    });
+}
+
+function savePackage(packageData) {
+
+    return new Promise(function(resolve, reject) {
+
+        const transaction =
+            database.transaction(
+                STORE_NAME,
+                "readwrite"
+            );
+
+        const store =
+            transaction.objectStore(
+                STORE_NAME
+            );
+
+        const request =
+            store.add(packageData);
+
+        request.onsuccess =
+            function() {
+                resolve(request.result);
+            };
+
+        request.onerror =
+            function() {
+                reject(request.error);
+            };
+    });
+}
+
+function getAllPackages() {
+
+    return new Promise(function(resolve, reject) {
+
+        const transaction =
+            database.transaction(
+                STORE_NAME,
+                "readonly"
+            );
+
+        const store =
+            transaction.objectStore(
+                STORE_NAME
+            );
+
+        const request =
+            store.getAll();
+
+        request.onsuccess =
+            function() {
+                resolve(request.result);
+            };
+
+        request.onerror =
+            function() {
+                reject(request.error);
+            };
+    });
+}
+
+function getOnePackage(id) {
+
+    return new Promise(function(resolve, reject) {
+
+        const transaction =
+            database.transaction(
+                STORE_NAME,
+                "readonly"
+            );
+
+        const store =
+            transaction.objectStore(
+                STORE_NAME
+            );
+
+        const request =
+            store.get(id);
+
+        request.onsuccess =
+            function() {
+                resolve(request.result);
+            };
+
+        request.onerror =
+            function() {
+                reject(request.error);
+            };
+    });
+}
+
+function updatePackage(packageData) {
+
+    return new Promise(function(resolve, reject) {
+
+        const transaction =
+            database.transaction(
+                STORE_NAME,
+                "readwrite"
+            );
+
+        const store =
+            transaction.objectStore(
+                STORE_NAME
+            );
+
+        const request =
+            store.put(packageData);
+
+        request.onsuccess =
+            function() {
+                resolve();
+            };
+
+        request.onerror =
+            function() {
+                reject(request.error);
+            };
+    });
+}
+
+function removePackageFromDB(id) {
+
+    return new Promise(function(resolve, reject) {
+
+        const transaction =
+            database.transaction(
+                STORE_NAME,
+                "readwrite"
+            );
+
+        const store =
+            transaction.objectStore(
+                STORE_NAME
+            );
+
+        const request =
+            store.delete(id);
+
+        request.onsuccess =
+            function() {
+                resolve();
+            };
+
+        request.onerror =
+            function() {
+                reject(request.error);
+            };
+    });
+}
+
+
+/* =========================================================
+   BASIC HTML ESCAPE
+========================================================= */
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+function formatBytes(bytes) {
+
+    if (!bytes) {
+        return "0 B";
+    }
+
+    if (bytes < 1024) {
+        return bytes + " B";
+    }
+
+    if (bytes < 1024 * 1024) {
+        return (
+            bytes / 1024
+        ).toFixed(1) + " KB";
+    }
+
+    return (
+        bytes / (1024 * 1024)
+    ).toFixed(1) + " MB";
+}
+
+
+/* =========================================================
+   PAGE SYSTEM
+========================================================= */
+
+function setPage(title, backFunction, content) {
+
+    const app =
+        document.getElementById("app");
+
+    let header = "";
+
+    if (backFunction) {
+
+        header += `
+            <div class="header">
+
+                <div
+                    class="header-back"
+                    data-action="back">
+                    ‹ Indietro
+                </div>
+
+                <h1 class="header-title">
+                    ${escapeHTML(title)}
+                </h1>
+
+            </div>
+        `;
+
+    } else {
+
+        header += `
+            <div class="header">
+
+                <h1 class="header-title">
+                    ${escapeHTML(title)}
+                </h1>
+
+            </div>
+        `;
+    }
+
+    app.innerHTML =
+        header +
+        `<div class="content">${content}</div>`;
+
+    if (backFunction) {
+
+        const backButton =
+            app.querySelector(
+                '[data-action="back"]'
+            );
+
+        if (backButton) {
+
+            backButton.onclick =
+                backFunction;
+        }
+    }
+}
+
+
+/* =========================================================
+   HOME SETTINGS
+========================================================= */
+
+function showHome() {
+
+    syncDeveloperModeFromCore();
+
+    setPage(
+        "Impostazioni",
+        null,
+        `
+        <div class="section">
+
+            <div class="section-title">
+                Sistema
+            </div>
+
+            <div class="card">
+
+                <div
+                    class="row"
+                    id="openCorilizon">
+
+                    <div class="row-left">
+
+                        <div class="row-icon">
+                            C
+                        </div>
+
+                        <div class="row-title">
+                            Corilizon 🔓✨
+                        </div>
+
+                    </div>
+
+                    <div class="arrow">
+                        ›
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        `
+    );
+
+    document
+        .getElementById("openCorilizon")
+        .onclick = showCorilizon;
+}
+
+
+/* =========================================================
+   CORILIZON MENU
+========================================================= */
+
+function showCorilizon() {
+
+    syncDeveloperModeFromCore();
+
+    setPage(
+        "Corilizon 🔓✨",
+        showHome,
+        `
+        <div class="section">
+
+            <div class="section-title">
+                Corilizon
+            </div>
+
+            <div class="card">
+
+                <div
+                    class="row"
+                    id="usbPage">
+
+                    <div class="row-left">
+                        <div class="row-icon">U</div>
+                        <div class="row-title">USB</div>
+                    </div>
+
+                    <div class="arrow">›</div>
+
+                </div>
+
+                <div
+                    class="row"
+                    id="packagePage">
+
+                    <div class="row-left">
+                        <div class="row-icon">P</div>
+                        <div class="row-title">
+                            Package Installer
+                        </div>
+                    </div>
+
+                    <div class="arrow">›</div>
+
+                </div>
+
+                <div
+                    class="row"
+                    id="installerPage">
+
+                    <div class="row-left">
+                        <div class="row-icon">I</div>
+                        <div class="row-title">
+                            Installer
+                        </div>
+                    </div>
+
+                    <div class="arrow">›</div>
+
+                </div>
+
+                <div
+                    class="row"
+                    id="developerPage">
+
+                    <div class="row-left">
+                        <div class="row-icon">D</div>
+                        <div class="row-title">
+                            Dev Mode
+                        </div>
+                    </div>
+
+                    <div class="arrow">›</div>
+
+                </div>
+
+                <div
+                    class="row"
+                    id="infoPage">
+
+                    <div class="row-left">
+                        <div class="row-icon">i</div>
+                        <div class="row-title">
+                            System Info
+                        </div>
+                    </div>
+
+                    <div class="arrow">›</div>
+
+                </div>
+
+                <div
+                    class="row"
+                    id="updatePage">
+
+                    <div class="row-left">
+                        <div class="row-icon">↻</div>
+                        <div class="row-title">
+                            Update Modded System
+                        </div>
+                    </div>
+
+                    <div class="arrow">›</div>
+
+                </div>
+
+            </div>
+
+        </div>
+        `
+    );
+
+    document
+        .getElementById("usbPage")
+        .onclick = showUSB;
+
+    document
+        .getElementById("packagePage")
+        .onclick = showPackageInstaller;
+
+    document
+        .getElementById("installerPage")
+        .onclick = showInstaller;
+
+    document
+        .getElementById("developerPage")
+        .onclick = showDeveloperMode;
+
+    document
+        .getElementById("infoPage")
+        .onclick = showSystemInfo;
+
+    document
+        .getElementById("updatePage")
+        .onclick = showUpdate;
+}
+
+
+/* =========================================================
+   USB
+========================================================= */
+
+function showUSB() {
+
+    setPage(
+        "USB",
+        showCorilizon,
+        `
+        <div class="section">
+
+            <div class="section-title">
+                USB
+            </div>
+
+            <div class="card">
+
+                <div class="box">
+
+                    <div
+                        id="usbStatus"
+                        class="status">
+
+                        <b>
+                            Nessun dispositivo USB rilevato.
+                        </b>
+
+                        <br><br>
+
+                        Corilizon non considera
+                        automaticamente presente
+                        nessun dispositivo.
+
+                    </div>
+
+                    <button
+                        id="usbButton"
+                        class="blue-button">
+
+                        Cerca dispositivo USB
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+        `
+    );
+
+    document
+        .getElementById("usbButton")
+        .onclick = searchUSB;
+}
+
+async function searchUSB() {
+
+    const status =
+        document.getElementById(
+            "usbStatus"
+        );
+
+    if (
+        !navigator.usb ||
+        typeof navigator.usb.requestDevice !== "function"
+    ) {
+
+        status.innerHTML = `
+
+            <span class="warning">
+                USB non disponibile.
+            </span>
+
+            <br><br>
+
+            Il browser non supporta
+            l'accesso WebUSB.
+
+            <br><br>
+
+            Nessun dispositivo è stato rilevato.
+
+        `;
+
+        return;
+    }
+
+    try {
+
+        const device =
+            await navigator.usb.requestDevice({
+                filters: []
+            });
+
+        status.innerHTML = `
+
+            <span class="success">
+                Dispositivo selezionato ✓
+            </span>
+
+            <br><br>
+
+            Nome:
+            ${escapeHTML(
+                device.productName ||
+                "Dispositivo USB"
+            )}
+
+        `;
+
+    } catch (error) {
+
+        status.innerHTML = `
+
+            <b>
+                Nessun dispositivo USB rilevato.
+            </b>
+
+            <br><br>
+
+            Nessun dispositivo è stato selezionato.
+
+        `;
+    }
+}
+
+
+/* =========================================================
+   PACKAGE INSTALLER
+========================================================= */
+
+function showPackageInstaller() {
+
+    setPage(
+        "Package Installer",
+        showCorilizon,
+        `
+        <div class="section">
+
+            <div class="section-title">
+                Install Package
+            </div>
+
+            <div class="card">
+
+                <div class="box">
+
+                    <input
+                        id="packageInput"
+                        class="file-input"
+                        type="file"
+                        accept=".index,.html,.ipa">
+
+                    <div class="description">
+
+                        <b>.index</b> e <b>.html</b>:
+                        Web App.
+
+                        <br><br>
+
+                        <b>.ipa</b>:
+                        package IPA importato
+                        nel sistema Corilizon.
+
+                    </div>
+
+                    <button
+                        id="installPackageButton"
+                        class="blue-button">
+
+                        Install Package
+
+                    </button>
+
+                    <div
+                        id="packageMessage"
+                        style="margin-top:12px;">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="section">
+
+            <div class="section-title">
+                Installed Packages
+            </div>
+
+            <div
+                class="card"
+                id="packagesList">
+
+                <div class="box">
+                    Caricamento...
+                </div>
+
+            </div>
+
+        </div>
+        `
+    );
+
+    document
+        .getElementById("installPackageButton")
+        .onclick = installPackage;
+
+    loadPackageList();
+}
+
+async function installPackage() {
+
+    const input =
+        document.getElementById(
+            "packageInput"
+        );
+
+    const message =
+        document.getElementById(
+            "packageMessage"
+        );
+
+    if (!input.files.length) {
+
+        message.innerHTML = `
+
+            <div class="status warning">
+                Seleziona un file.
+            </div>
+
+        `;
+
+        return;
+    }
+
+    const file =
+        input.files[0];
+
+    const filename =
+        file.name;
+
+    const lowerName =
+        filename.toLowerCase();
+
+    if (
+        lowerName.endsWith(".index") ||
+        lowerName.endsWith(".html")
+    ) {
+
+        const html =
+            await file.text();
+
+        await savePackage({
+
+            name: filename,
+            filename: filename,
+            type: "web",
+            size: file.size,
+            content: html,
+            webUrl: "",
+            date: Date.now()
+
+        });
+
+        message.innerHTML = `
+
+            <div class="status">
+
+                <span class="success">
+                    Package Installed ✓
+                </span>
+
+                <br><br>
+
+                ${escapeHTML(filename)}
+
+                <br><br>
+
+                La Web App è stata salvata
+                nel Package Installer.
+
+                <button
+                    id="openNewWebApp"
+                    class="blue-button">
+
+                    Apri Web App
+
+                </button>
+
+                <button
+                    id="homeNewWebApp"
+                    class="gray-button">
+
+                    Aggiungi alla Home
+
+                </button>
+
+            </div>
+
+        `;
+
+        const packages =
+            await getAllPackages();
+
+        const newest =
+            packages
+                .filter(function(item) {
+                    return item.type === "web";
+                })
+                .sort(function(a,b) {
+                    return b.date - a.date;
+                })[0];
+
+        if (newest) {
+
+            document
+                .getElementById(
+                    "openNewWebApp"
+                )
+                .onclick =
+                    function() {
+                        openWebPackage(newest.id);
+                    };
+
+            document
+                .getElementById(
+                    "homeNewWebApp"
+                )
+                .onclick =
+                    function() {
+                        openWebPackage(
+                            newest.id,
+                            true
+                        );
+                    };
+        }
+
+        loadPackageList();
+
+        return;
+    }
+
+    if (lowerName.endsWith(".ipa")) {
+
+        await savePackage({
+
+            name: filename,
+            filename: filename,
+            type: "ipa",
+            size: file.size,
+            content: null,
+            webUrl: "",
+            date: Date.now()
+
+        });
+
+        message.innerHTML = `
+
+            <div class="status">
+
+                <span class="success">
+                    Package Imported ✓
+                </span>
+
+                <br><br>
+
+                ${escapeHTML(filename)}
+
+                <br><br>
+
+                L'IPA è stata importata
+                nel Package Installer.
+
+                <br><br>
+
+                <span class="warning">
+                    Installazione nativa non eseguita.
+                </span>
+
+                <br><br>
+
+                Corilizon non bypassa le firme
+                di iOS e non installa IPA
+                non autorizzate.
+
+            </div>
+
+        `;
+
+        loadPackageList();
+
+        return;
+    }
+
+    message.innerHTML = `
+
+        <div class="status error">
+            File non supportato.
+        </div>
+
+    `;
+}
+
+
+/* =========================================================
+   PACKAGE LIST
+========================================================= */
+
+async function loadPackageList() {
+
+    const container =
+        document.getElementById(
+            "packagesList"
+        );
+
+    if (!container) {
+        return;
+    }
+
+    const packages =
+        await getAllPackages();
+
+    if (!packages.length) {
+
+        container.innerHTML = `
+            <div class="box">
+                Nessun package installato.
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML = "";
+
+    packages
+        .sort(function(a,b) {
+            return b.date - a.date;
+        })
+        .forEach(function(pkg) {
+
+            const item =
+                document.createElement("div");
+
+            item.className =
+                "package";
+
+            const typeText =
+                pkg.type === "web"
+                ? "Web App"
+                : "IPA Package";
+
+            item.innerHTML = `
+
+                <div class="package-name">
+                    ${escapeHTML(pkg.name)}
+                </div>
+
+                <div class="package-info">
+                    ${typeText}
+                    ·
+                    ${formatBytes(pkg.size)}
+                </div>
+
+            `;
+
+            const actions =
+                document.createElement("div");
+
+            actions.className =
+                "package-actions";
+
+            if (pkg.type === "web") {
+
+                const openButton =
+                    document.createElement("button");
+
+                openButton.className =
+                    "blue-button";
+
+                openButton.textContent =
+                    "Apri";
+
+                openButton.onclick =
+                    function() {
+                        openWebPackage(pkg.id);
+                    };
+
+                const homeButton =
+                    document.createElement("button");
+
+                homeButton.className =
+                    "gray-button";
+
+                homeButton.textContent =
+                    "Aggiungi alla Home";
+
+                homeButton.onclick =
+                    function() {
+                        openWebPackage(
+                            pkg.id,
+                            true
+                        );
+                    };
+
+                actions.appendChild(
+                    openButton
+                );
+
+                actions.appendChild(
+                    homeButton
+                );
+
+            } else {
+
+                const webButton =
+                    document.createElement("button");
+
+                webButton.className =
+                    "blue-button";
+
+                webButton.textContent =
+                    "Versione Web";
+
+                webButton.onclick =
+                    function() {
+                        configureIPA(pkg.id);
+                    };
+
+                actions.appendChild(
+                    webButton
+                );
+
+                if (pkg.webUrl) {
+
+                    const openButton =
+                        document.createElement("button");
+
+                    openButton.className =
+                        "gray-button";
+
+                    openButton.textContent =
+                        "Apri Web";
+
+                    openButton.onclick =
+                        function() {
+
+                            window.location.href =
+                                pkg.webUrl;
+                        };
+
+                    actions.appendChild(
+                        openButton
+                    );
+                }
+            }
+
+            item.appendChild(actions);
+
+            const deleteButton =
+                document.createElement("button");
+
+            deleteButton.className =
+                "red-button";
+
+            deleteButton.textContent =
+                "Disinstalla";
+
+            deleteButton.onclick =
+                async function() {
+
+                    const confirmed =
+                        window.confirm(
+                            "Vuoi rimuovere questo package?"
+                        );
+
+                    if (!confirmed) {
+                        return;
+                    }
+
+                    await removePackageFromDB(
+                        pkg.id
+                    );
+
+                    loadPackageList();
+                };
+
+            item.appendChild(
+                deleteButton
+            );
+
+            container.appendChild(item);
+        });
+}
+
+
+/* =========================================================
+   OPEN WEB APP
+========================================================= */
+
+async function openWebPackage(
+    id,
+    showInstructions
+) {
+
+    const pkg =
+        await getOnePackage(id);
+
+    if (!pkg) {
+        return;
+    }
+
+    if (
+        pkg.type !== "web" ||
+        !pkg.content
+    ) {
+
+        window.alert(
+            "Web App non disponibile."
+        );
+
+        return;
+    }
+
+    const blob =
+        new Blob(
+            [pkg.content],
+            {
+                type: "text/html"
+            }
+        );
+
+    const url =
+        URL.createObjectURL(blob);
+
+    window.location.href = url;
+
+    if (showInstructions) {
+
+        setTimeout(function() {
+
+            window.alert(
+                "Per aggiungere l'app alla Home:\n\n" +
+                "1. Tocca Condividi.\n" +
+                "2. Tocca 'Aggiungi alla schermata Home'.\n" +
+                "3. Tocca 'Aggiungi'."
+            );
+
+        }, 1200);
+    }
+}
+
+
+/* =========================================================
+   IPA WEB VERSION
+========================================================= */
+
+async function configureIPA(id) {
+
+    const pkg =
+        await getOnePackage(id);
+
+    if (!pkg) {
+        return;
+    }
+
+    const url =
+        window.prompt(
+            "Inserisci l'URL della versione Web:",
+            pkg.webUrl || ""
+        );
+
+    if (url === null) {
+        return;
+    }
+
+    const trimmed =
+        url.trim();
+
+    if (
+        trimmed &&
+        !trimmed.startsWith("https://") &&
+        !trimmed.startsWith("http://")
+    ) {
+
+        window.alert(
+            "Inserisci un URL che inizi con http:// o https://."
+        );
+
+        return;
+    }
+
+    pkg.webUrl =
+        trimmed;
+
+    await updatePackage(pkg);
+
+    loadPackageList();
+}
+
+
+/* =========================================================
+   INTERNAL INSTALLER
+========================================================= */
+
+function showInstaller() {
+
+    setPage(
+        "Installer",
+        showCorilizon,
+        `
+        <div class="section">
+
+            <div class="section-title">
+                Installer
+            </div>
+
+            <div class="card">
+
+                <div class="box">
+
+                    <div
+                        id="installerStatus"
+                        class="status">
+
+                        Installer pronto.
+
+                    </div>
+
+                    <div
+                        id="installerProgressContainer"
+                        class="progress-container">
+
+                        <div
+                            id="installerProgress"
+                            class="progress-bar">
+                        </div>
+
+                    </div>
+
+                    <div
+                        id="installerPercent"
+                        class="percent">
+
+                    </div>
+
+                    <button
+                        id="installerButton"
+                        class="blue-button">
+
+                        Start Installer
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+        `
+    );
+
+    document
+        .getElementById("installerButton")
+        .onclick = startInstaller;
+}
+
+function startInstaller() {
+
+    if (installerRunning) {
+        return;
+    }
+
+    syncDeveloperModeFromCore();
+
+    const status =
+        document.getElementById(
+            "installerStatus"
+        );
+
+    /*
+     * Il sistema richiede Dev Mode prima
+     * dell'installazione del sistema.
+     */
+
+    if (!developerMode) {
+
+        status.innerHTML = `
+
+            <span class="warning">
+                Dev Mode richiesto.
+            </span>
+
+            <br><br>
+
+            Attiva prima
+            <b>Dev Mode Active</b>.
+
+        `;
+
+        return;
+    }
+
+    installerRunning = true;
+
+    const button =
+        document.getElementById(
+            "installerButton"
+        );
+
+    const container =
+        document.getElementById(
+            "installerProgressContainer"
+        );
+
+    const progress =
+        document.getElementById(
+            "installerProgress"
+        );
+
+    const percent =
+        document.getElementById(
+            "installerPercent"
+        );
+
+    button.disabled = true;
+
+    container.style.display =
+        "block";
+
+    let value = 0;
+
+    const timer =
+        window.setInterval(function() {
+
+            value += 2;
+
+            if (value > 100) {
+                value = 100;
+            }
+
+            progress.style.width =
+                value + "%";
+
+            percent.textContent =
+                value + "%";
+
+            if (value < 30) {
+
+                status.innerHTML =
+                    "<b>Preparing installer...</b>";
+
+            } else if (value < 60) {
+
+                status.innerHTML =
+                    "<b>Installing components...</b>";
+
+            } else if (value < 90) {
+
+                status.innerHTML =
+                    "<b>Configuring system...</b>";
+
+            } else {
+
+                status.innerHTML =
+                    "<b>Finalizing...</b>";
+            }
+
+            if (value >= 100) {
+
+                window.clearInterval(timer);
+
+                installerRunning = false;
+
+                button.disabled = false;
+
+                status.innerHTML = `
+                    <span class="success">
+                        Installation Complete ✓
+                    </span>
+                `;
+
+                percent.textContent =
+                    "100% — Complete ✓";
+
+                /*
+                 * IMPORTANTISSIMO:
+                 *
+                 * Qui colleghiamo il vecchio
+                 * Start Installer al Core.
+                 *
+                 * Il Core salva che l'installazione
+                 * è stata completata e prepara
+                 * il successivo boot simulato.
+                 */
+
+                if (
+                    typeof completeCorilzonInstaller ===
+                    "function"
+                ) {
+
+                    completeCorilzonInstaller();
+
+                } else {
+
+                    console.warn(
+                        "completeCorilzonInstaller() non disponibile."
+                    );
+                }
+            }
+
+        }, 60);
+}
+
+
+/* =========================================================
+   DEVELOPER MODE
+========================================================= */
+
+function showDeveloperMode() {
+
+    syncDeveloperModeFromCore();
+
+    setPage(
+        "Dev Mode",
+        showCorilizon,
+        `
+        <div class="section">
+
+            <div class="section-title">
+                Developer Mode
+            </div>
+
+            <div class="card">
+
+                <div class="box">
+
+                    <div
+                        id="developerStatus"
+                        class="status">
+
+                        <b>Developer Mode</b>
+
+                        <br><br>
+
+                        ${
+                            developerMode
+                            ?
+                            `
+                            <span class="success">
+                                Developer Mode Active ✓
+                            </span>
+                            `
+                            :
+                            `
+                            Developer Mode is disabled.
+                            `
+                        }
+
+                    </div>
+
+                    <button
+                        id="developerButton"
+                        class="blue-button">
+
+                        ${
+                            developerMode
+                            ?
+                            "Stop Developer Mode"
+                            :
+                            "Start Developer Mode"
+                        }
+
+                    </button>
+
+                    <div
+                        id="developerConsole"
+                        class="console">
+
+Corilizon Developer Console
+---------------------------
+System: READY
+Package Installer: READY
+Web Apps: READY
+USB Interface: READY
+Developer Mode: ${
+    developerMode
+    ? "ACTIVE"
+    : "OFF"
+}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        `
+    );
+
+    document
+        .getElementById("developerButton")
+        .onclick =
+            toggleDeveloperMode;
+}
+
+function toggleDeveloperMode() {
+
+    developerMode =
+        !developerMode;
+
+    /*
+     * Salviamo lo stato nel Core.
+     */
+
+    if (developerMode) {
+
+        if (
+            typeof enableDeveloperMode ===
+            "function"
+        ) {
+
+            enableDeveloperMode();
+
+        }
+
+    } else {
+
+        if (
+            typeof setCorilzonState ===
+            "function"
+        ) {
+
+            setCorilzonState(
+                "developerMode",
+                false
+            );
+
+        }
+
+    }
+
+    showDeveloperMode();
+}
+
+
+/* =========================================================
+   SYSTEM INFO
+========================================================= */
+
+function showSystemInfo() {
+
+    syncDeveloperModeFromCore();
+
+    setPage(
+        "System Info",
+        showCorilizon,
+        `
+        <div class="section">
+
+            <div class="section-title">
+                Corilizon System
+            </div>
+
+            <div class="card">
+
+                <div class="info-row">
+                    <span>System</span>
+                    <span class="info-value">
+                        Corilizon
+                    </span>
+                </div>
+
+                <div class="info-row">
+                    <span>Version</span>
+                    <span class="info-value">
+                        1.0
+                    </span>
+                </div>
+
+                <div class="info-row">
+                    <span>Package Installer</span>
+                    <span class="info-value">
+                        Ready
+                    </span>
+                </div>
+
+                <div class="info-row">
+                    <span>Web App System</span>
+                    <span class="info-value">
+                        Enabled
+                    </span>
+                </div>
+
+                <div class="info-row">
+                    <span>Developer Mode</span>
+                    <span class="info-value">
+                        ${
+                            developerMode
+                            ? "Active"
+                            : "Off"
+                        }
+                    </span>
+                </div>
+
+                <div class="info-row">
+                    <span>Browser</span>
+                    <span
+                        class="info-value"
+                        id="browserInfo">
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+        `
+    );
+
+    document
+        .getElementById("browserInfo")
+        .textContent =
+            navigator.userAgent.includes("Safari")
+            ? "Safari"
+            : "Web Browser";
+}
+
+
+/* =========================================================
+   UPDATE MODDED SYSTEM
+========================================================= */
+
+function showUpdate() {
+
+    setPage(
+        "Update Modded System",
+        showCorilizon,
+        `
+        <div class="section">
+
+            <div class="section-title">
+                System Update
+            </div>
+
+            <div class="card">
+
+                <div class="box">
+
+                    <div
+                        id="updateStatus"
+                        class="status">
+
+                        <b>
+                            Update Modded System
+                        </b>
+
+                        <br><br>
+
+                        System ready for update.
+
+                    </div>
+
+                    <div
+                        id="updateProgressContainer"
+                        class="progress-container">
+
+                        <div
+                            id="updateProgress"
+                            class="progress-bar">
+                        </div>
+
+                    </div>
+
+                    <div
+                        id="updatePercent"
+                        class="percent">
+
+                    </div>
+
+                    <button
+                        id="updateButton"
+                        class="blue-button">
+
+                        Update Modded System
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+        `
+    );
+
+    document
+        .getElementById("updateButton")
+        .onclick =
+            startSystemUpdate;
+}
+
+function startSystemUpdate() {
+
+    if (updateRunning) {
+        return;
+    }
+
+    updateRunning = true;
+
+    const button =
+        document.getElementById(
+            "updateButton"
+        );
+
+    const status =
+        document.getElementById(
+            "updateStatus"
+        );
+
+    const container =
+        document.getElementById(
+            "updateProgressContainer"
+        );
+
+    const progress =
+        document.getElementById(
+            "updateProgress"
+        );
+
+    const percent =
+        document.getElementById(
+            "updatePercent"
+        );
+
+    button.disabled = true;
+
+    container.style.display =
+        "block";
+
+    let value = 0;
+
+    const timer =
+        window.setInterval(function() {
+
+            value += 1;
+
+            progress.style.width =
+                value + "%";
+
+            percent.textContent =
+                value + "%";
+
+            if (value < 20) {
+
+                status.innerHTML =
+                    "<b>Checking system files...</b>";
+
+            } else if (value < 45) {
+
+                status.innerHTML =
+                    "<b>Preparing update...</b>";
+
+            } else if (value < 75) {
+
+                status.innerHTML =
+                    "<b>Installing system components...</b>";
+
+            } else if (value < 95) {
+
+                status.innerHTML =
+                    "<b>Finalizing update...</b>";
+
+            } else {
+
+                status.innerHTML =
+                    "<b>Completing update...</b>";
+            }
+
+            if (value >= 100) {
+
+                window.clearInterval(timer);
+
+                updateRunning = false;
+
+                button.disabled = false;
+
+                /*
+                 * L'aggiornamento richiede un nuovo
+                 * boot simulato.
+                 */
+
+                if (
+                    typeof simulateCorilzonUpdate ===
+                    "function"
+                ) {
+
+                    simulateCorilzonUpdate("1.1.0");
+
+                }
+
+                status.innerHTML = `
+
+                    <span class="success">
+                        Update Modded System Complete ✓
+                    </span>
+
+                    <br><br>
+
+                    Corilzon is up to date.
+
+                `;
+
+                percent.textContent =
+                    "100% — Complete ✓";
+            }
+
+        }, 45);
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+syncDeveloperModeFromCore();
+
+initializeDatabase()
+    .then(function() {
+
+        showHome();
+
+    })
+    .catch(function(error) {
+
+        document.getElementById("app").innerHTML = `
+
+            <div class="content">
+
+                <h1>
+                    Corilizon
+                </h1>
+
+                <div class="status error">
+
+                    Errore nell'inizializzazione
+                    del database.
+
+                    <br><br>
+
+                    ${escapeHTML(
+                        error &&
+                        error.message
+                        ?
+                        error.message
+                        :
+                        String(error)
+                    )}
+
+                </div>
+
+            </div>
+
+        `;
+    });
+
+</script>
+
+</body>
+</html>
