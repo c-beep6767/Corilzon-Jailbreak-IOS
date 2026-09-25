@@ -1,0 +1,217 @@
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    background: #000;
+    color: #fff;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "Helvetica Neue",
+        Arial,
+        sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    min-height: 100svh;
+}
+
+.installer {
+    min-height: 100vh;
+    min-height: 100svh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px;
+    text-align: center;
+}
+
+.logo,
+.modal-logo {
+    width: 92px;
+    height: 92px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 22px;
+
+    background: #111;
+    border: 1px solid #292929;
+
+    color: #fff;
+
+    font-size: 54px;
+    font-weight: 700;
+
+    box-shadow:
+        0 0 35px rgba(255,255,255,.08);
+
+    margin-bottom: 24px;
+}
+
+h1 {
+    margin: 0;
+
+    font-size: 38px;
+    font-weight: 700;
+    letter-spacing: -1px;
+}
+
+.subtitle {
+    margin: 8px 0 35px;
+
+    color: #8e8e93;
+    font-size: 16px;
+}
+
+.install-button {
+    width: min(300px, 100%);
+
+    padding: 16px 25px;
+
+    border: none;
+    border-radius: 14px;
+
+    background: #fff;
+    color: #000;
+
+    font-size: 17px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        transform .15s,
+        opacity .15s;
+}
+
+.install-button:active {
+    transform: scale(.96);
+    opacity: .8;
+}
+
+.version {
+    position: fixed;
+
+    bottom: 22px;
+
+    margin: 0;
+
+    color: #555;
+
+    font-size: 12px;
+}
+
+.modal {
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 25px;
+
+    background: rgba(0,0,0,.72);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    z-index: 100;
+}
+
+.hidden {
+    display: none;
+}
+
+.modal-box {
+    width: min(360px, 100%);
+
+    padding: 28px 22px 22px;
+
+    background: #1c1c1e;
+
+    border-radius: 24px;
+
+    text-align: center;
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.5);
+}
+
+.modal-logo {
+    width: 64px;
+    height: 64px;
+
+    margin: 0 auto 18px;
+
+    border-radius: 16px;
+
+    font-size: 34px;
+}
+
+.modal-box h2 {
+    margin: 0 0 10px;
+
+    font-size: 22px;
+}
+
+.modal-box p {
+    margin: 0 auto 22px;
+
+    color: #aaa;
+
+    line-height: 1.45;
+
+    font-size: 15px;
+}
+
+.small-text {
+    font-size: 13px !important;
+    color: #777 !important;
+}
+
+.confirm-button,
+.cancel-button {
+    width: 100%;
+
+    padding: 14px;
+
+    border: none;
+    border-radius: 12px;
+
+    font-size: 16px;
+
+    cursor: pointer;
+}
+
+.confirm-button {
+    background: #fff;
+    color: #000;
+
+    margin-bottom: 9px;
+}
+
+.cancel-button {
+    background: #2c2c2e;
+    color: #fff;
+}
+
+strong {
+    color: #fff;
+}
