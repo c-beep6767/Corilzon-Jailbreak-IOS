@@ -1,0 +1,19 @@
+{
+  "packages": [
+    {
+      "name": "Corilizon Core",
+      "version": "1.0",
+      "type": "system"
+    },
+    {
+      "name": "Terminal",
+      "version": "1.0",
+      "type": "application"
+    },
+    {
+      "name": "Package Manager",
+      "version": "1.0",
+      "type": "system"
+    }
+  ]
+}
