@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width,
+                   initial-scale=1.0,
+                   viewport-fit=cover">
+
+    <meta name="theme-color" content="#000000">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Colirzon">
+
+    <link rel="manifest" href="./manifest.json">
+
+    <link rel="stylesheet" href="./style.css">
+
+    <title>Colirzon Installer</title>
+</head>
+
+<body>
+
+    <main class="installer">
+
+        <div class="logo">
+            C
+        </div>
+
+        <h1>Colirzon</h1>
+
+        <p class="subtitle">
+            Jailbreak Installer
+        </p>
+
+        <button id="installButton" class="install-button">
+            INSTALLA
+        </button>
+
+        <p class="version">
+            Colirzon Installer
+        </p>
+
+    </main>
+
+
+    <div id="modal" class="modal hidden">
+
+        <div class="modal-box">
+
+            <div class="modal-logo">
+                C
+            </div>
+
+            <h2>Aggiungere Colirzon?</h2>
+
+            <p>
+                Aggiungi Colirzon alla schermata Home
+                per aprire direttamente il Jailbreak.
+            </p>
+
+            <button id="confirmButton" class="confirm-button">
+                Continua
+            </button>
+
+            <button id="cancelButton" class="cancel-button">
+                Annulla
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div id="iosInstructions" class="modal hidden">
+
+        <div class="modal-box">
+
+            <div class="modal-logo">
+                C
+            </div>
+
+            <h2>Installa Colirzon</h2>
+
+            <p>
+                Su iPhone, usa il pulsante
+                <strong>Condividi</strong> di Safari e scegli
+                <strong>Aggiungi alla schermata Home</strong>.
+            </p>
+
+            <p class="small-text">
+                L'icona Colirzon aprirà direttamente
+                il Jailbreak.
+            </p>
+
+            <button id="closeInstructions"
+                    class="confirm-button">
+                Ho capito
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script src="./installer.js"></script>
+
+</body>
+</html>
