@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Jailbreak Tool</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #050505;
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", Arial;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    width: 92%;
+    max-width: 390px;
+    background: #101010;
+    border: 1px solid #292929;
+    border-radius: 28px;
+    padding: 28px 22px;
+    box-shadow: 0 20px 60px #000;
+}
+
+h1 {
+    text-align: center;
+    margin: 0;
+    font-size: 27px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #888;
+    margin: 8px 0 25px;
+}
+
+.device {
+    border: 1px solid #292929;
+    border-radius: 18px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    padding: 7px 0;
+}
+
+.label {
+    color: #888;
+}
+
+button {
+    width: 100%;
+    padding: 16px;
+    border: 0;
+    border-radius: 16px;
+    background: white;
+    color: black;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+button:disabled {
+    opacity: .5;
+}
+
+.terminal {
+    display: none;
+    margin-top: 20px;
+    background: #020202;
+    border: 1px solid #292929;
+    border-radius: 15px;
+    padding: 13px;
+    height: 190px;
+    overflow: hidden;
+    font-family: monospace;
+    font-size: 12px;
+}
+
+.progress {
+    height: 5px;
+    background: #222;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+.bar {
+    width: 0%;
+    height: 100%;
+    background: white;
+    transition: width .4s;
+}
+
+.success {
+    display: none;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.success-icon {
+    font-size: 50px;
+}
+
+.success h2 {
+    margin-bottom: 5px;
+}
+
+.success p {
+    color: #888;
+}
+
+.warning {
+    color: #666;
+    font-size: 11px;
+    text-align: center;
+    margin-top: 18px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <h1>Jailbreak Tool</h1>
+
+    <div class="subtitle">
+        Device simulation
+    </div>
+
+    <div class="device">
+
+        <div class="row">
+            <span class="label">Device</span>
+            <b>iPhone 17</b>
+        </div>
+
+        <div class="row">
+            <span class="label">iOS</span>
+            <b>27.0</b>
+        </div>
+
+        <div class="row">
+            <span class="label">Status</span>
+            <b id="status">Ready</b>
+        </div>
+
+    </div>
+
+    <button id="jailbreak">
+        Jailbreak Now
+    </button>
+
+    <div class="terminal" id="terminal">
+
+        <div id="logs"></div>
+
+        <div class="progress">
+            <div class="bar" id="bar"></div>
+        </div>
+
+    </div>
+
+    <div class="success" id="success">
+
+        <div class="success-icon">
+            ✨🔓
+        </div>
+
+        <h2>
+            Jailbreak Success
+        </h2>
+
+        <p>
+            Simulation completed successfully.
+        </p>
+
+    </div>
+
+    <div class="warning">
+        DEMO / SIMULATION — non modifica iOS.
+    </div>
+
+</div>
+
+<script>
+
+const button = document.getElementById("jailbreak");
+const terminal = document.getElementById("terminal");
+const logs = document.getElementById("logs");
+const bar = document.getElementById("bar");
+const status = document.getElementById("status");
+const success = document.getElementById("success");
+
+const steps = [
+
+    "Initializing device...",
+    "Checking iPhone 17...",
+    "Checking iOS 27.0...",
+    "Preparing jailbreak simulation...",
+    "Running exploit simulation...",
+    "Verifying simulated patch...",
+    "Finalizing..."
+
+];
+
+function wait(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+button.onclick = async function() {
+
+    button.disabled = true;
+
+    terminal.style.display = "block";
+
+    status.textContent = "Running";
+
+    for (let i = 0; i < steps.length; i++) {
+
+        const line = document.createElement("div");
+
+        line.textContent = "> " + steps[i];
+
+        logs.appendChild(line);
+
+        await wait(700);
+
+        bar.style.width =
+            ((i + 1) / steps.length * 100) + "%";
+    }
+
+    await wait(500);
+
+    terminal.style.display = "none";
+
+    success.style.display = "block";
+
+    status.textContent = "Success";
+
+    /*
+       Apre il Comando Rapido "Jailbreak Success".
+       Quel Comando Rapido mostrerà la notifica.
+    */
+
+    window.location.href =
+        "shortcuts://run-shortcut?name=Jailbreak%20Success";
+};
+
+</script>
+
+</body>
+</html>
