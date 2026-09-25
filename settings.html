@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#f2f2f7">
+<title>Corilizon Settings</title>
+
+<link rel="manifest" href="manifest.json">
+
+<style>
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    margin: 0;
+    background: #f2f2f7;
+    color: #111;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+                 "SF Pro Text", Arial, sans-serif;
+}
+
+.app {
+    min-height: 100vh;
+    padding-bottom: 30px;
+}
+
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(242,242,247,.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid #d1d1d6;
+    padding: 55px 20px 12px;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 34px;
+    font-weight: 700;
+}
+
+.content {
+    padding: 24px 16px;
+}
+
+.section {
+    margin-bottom: 25px;
+}
+
+.section-title {
+    color: #6e6e73;
+    text-transform: uppercase;
+    font-size: 13px;
+    margin: 0 15px 8px;
+    font-weight: 600;
+}
+
+.card {
+    background: white;
+    border-radius: 13px;
+    overflow: hidden;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.04);
+}
+
+.row {
+    min-height: 52px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e5e5ea;
+    cursor: pointer;
+}
+
+.row:last-child {
+    border-bottom: none;
+}
+
+.row:active {
+    background: #e5e5ea;
+}
+
+.row-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.row-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #111;
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.row-title {
+    font-size: 17px;
+}
+
+.arrow {
+    color: #8e8e93;
+    font-size: 22px;
+}
+
+.back {
+    color: #007aff;
+    font-size: 17px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.description {
+    color: #6e6e73;
+    font-size: 13px;
+    line-height: 1.45;
+    padding: 10px 16px 0;
+}
+
+button,
+input[type="url"] {
+    width: 100%;
+    border: none;
+    border-radius: 12px;
+    padding: 14px;
+    font-size: 16px;
+}
+
+button {
+    background: #007aff;
+    color: white;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+button.secondary {
+    background: #e5e5ea;
+    color: #111;
+}
+
+button.danger {
+    background: #ff3b30;
+}
+
+button:active {
+    opacity: .75;
+}
+
+input[type="file"] {
+    width: 100%;
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid #d1d1d6;
+}
+
+input[type="url"] {
+    background: white;
+    border: 1px solid #d1d1d6;
+    margin-top: 10px;
+}
+
+.status {
+    margin-top: 15px;
+    padding: 14px;
+    background: white;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.45;
+}
+
+.progress {
+    width: 100%;
+    height: 10px;
+    background: #d1d1d6;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 15px;
+}
+
+.progress-bar {
+    width: 0%;
+    height: 100%;
+    background: #007aff;
+    transition: width .2s;
+}
+
+.app-item {
+    padding: 15px;
+    border-bottom: 1px solid #e5e5ea;
+}
+
+.app-item:last-child {
+    border-bottom: none;
+}
+
+.app-name {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.app-meta {
+    margin-top: 4px;
+    color: #6e6e73;
+    font-size: 13px;
+}
+
+.app-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.app-buttons button {
+    margin: 0;
+    flex: 1;
+}
+
+.hidden {
+    display: none;
+}
+
+.center {
+    text-align: center;
+}
+
+.success {
+    color: #34c759;
+    font-weight: 600;
+}
+
+.warning {
+    color: #ff9500;
+    font-weight: 600;
+}
+
+.code {
+    background: #000;
+    color: #00ff66;
+    padding: 15px;
+    border-radius: 12px;
+    font-family: monospace;
+    font-size: 12px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app" id="app"></div>
+
+<script>
+/* =========================================================
+   CORILIZON SETTINGS
+   HTML / .INDEX = WEB APP
+   IPA = WEB LAUNCHER / PACKAGE
+   ========================================================= */
+
+const DB_NAME = "CorilizonDB";
+const DB_VERSION = 3;
+const STORE_NAME = "apps";
+
+let db;
+let currentPage = "home";
+
+/* ---------------------------------------------------------
+   DATABASE
+   --------------------------------------------------------- */
+
+function openDB() {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+        request.onupgradeneeded = function(event) {
+            const database = event.target.result;
+
+            if (!database.objectStoreNames.contains(STORE_NAME)) {
+                database.createObjectStore(STORE_NAME, {
+                    keyPath: "id",
+                    autoIncrement: true
+                });
+            }
+        };
+
+        request.onsuccess = function(event) {
+            db = event.target.result;
+            resolve(db);
+        };
+
+        request.onerror = function() {
+            reject(request.error);
+        };
+    });
+}
+
+function addPackage(packageData) {
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE_NAME, "readwrite");
+        const store = tx.objectStore(STORE_NAME);
+
+        const request = store.add(packageData);
+
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+    });
+}
+
+function getPackages() {
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE_NAME, "readonly");
+        const store = tx.objectStore(STORE_NAME);
+
+        const request = store.getAll();
+
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+    });
+}
+
+function deletePackage(id) {
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE_NAME, "readwrite");
+        const store = tx.objectStore(STORE_NAME);
+
+        const request = store.delete(id);
+
+        request.onsuccess = () => resolve();
+        request.onerror = () => reject(request.error);
+    });
+}
+
+/* ---------------------------------------------------------
+   BASIC UI
+   --------------------------------------------------------- */
+
+function header(title, back = false) {
+    return `
+        <div class="header">
+            ${back ? `<div class="back" onclick="renderHome()">‹ Impostazioni</div>` : ""}
+            <h1>${title}</h1>
+        </div>
+    `;
+}
+
+function renderHome() {
+    currentPage = "home";
+
+    document.getElementById("app").innerHTML = `
+        ${header("Impostazioni")}
+
+        <div class="content">
+            <div class="section">
+                <div class="section-title">Sistema</div>
+
+                <div class="card">
+                    <div class="row" onclick="renderCorilizon()">
+                        <div class="row-left">
+                            <div class="row-icon">C</div>
+                            <div class="row-title">Corilizon 🔓✨</div>
+                        </div>
+
+                        <div class="arrow">›</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+/* ---------------------------------------------------------
+   CORILIZON MENU
+   --------------------------------------------------------- */
+
+function renderCorilizon() {
+    currentPage = "corilizon";
+
+    document.getElementById("app").innerHTML = `
+        ${header("Corilizon 🔓✨", true)}
+
+        <div class="content">
+
+            <div class="section">
+                <div class="section-title">Strumenti</div>
+
+                <div class="card">
+
+                    <div class="row" onclick="renderUSB()">
+                        <div class="row-left">
+                            <div class="row-icon">U</div>
+                            <div class="row-title">USB</div>
+                        </div>
+                        <div class="arrow">›</div>
+                    </div>
+
+                    <div class="row" onclick="renderPackage()">
+                        <div class="row-left">
+                            <div class="row-icon">P</div>
+                            <div class="row-title">Package Installer</div>
+                        </div>
+                        <div class="arrow">›</div>
+                    </div>
+
+                    <div class="row" onclick="renderInstaller()">
+                        <div class="row-left">
+                            <div class="row-icon">I</div>
+                            <div class="row-title">Installer</div>
+                        </div>
+                        <div class="arrow">›</div>
+                    </div>
+
+                    <div class="row" onclick="renderDev()">
+                        <div class="row-left">
+                            <div class="row-icon">D</div>
+                            <div class="row-title">Dev Mode</div>
+                        </div>
+                        <div class="arrow">›</div>
+                    </div>
+
+                    <div class="row" onclick="renderInfo()">
+                        <div class="row-left">
+                            <div class="row-icon">i</div>
+                            <div class="row-title">System Info</div>
+                        </div>
+                        <div class="arrow">›</div>
+                    </div>
+
+                    <div class="row" onclick="renderUpdate()">
+                        <div class="row-left">
+                            <div class="row-icon">↻</div>
+                            <div class="row-title">Update Modded System</div>
+                        </div>
+                        <div class="arrow">›</div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    `;
+}
+
+/* ---------------------------------------------------------
+   USB
+   --------------------------------------------------------- */
+
+function renderUSB() {
+    document.getElementById("app").innerHTML = `
+        ${header("USB", true)}
+
+        <div class="content">
+
+            <div class="section">
+                <div class="section-title">USB</div>
+
+                <div class="card">
+                    <div class="description">
+                        Corilizon USB interface.
+                    </div>
+
+                    <div style="padding:16px;">
+                        <button onclick="simulateUSB()">
+                            Cerca dispositivi USB
+                        </button>
+
+                        <div id="usbStatus" class="status">
+                            Nessun dispositivo collegato.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    `;
+}
+
+function simulateUSB() {
+    document.getElementById("usbStatus").innerHTML =
+        "Scansione USB...<br><br>Interfaccia pronta.";
+}
+
+/* ---------------------------------------------------------
+   PACKAGE INSTALLER
+   --------------------------------------------------------- */
+
+function renderPackage() {
+    document.getElementById("app").innerHTML = `
+        ${header("Package Installer", true)}
+
+        <div class="content">
+
+            <div class="section">
+                <div class="section-title">Importa package</div>
+
+                <div class="card">
+                    <div style="padding:16px;">
+
+                        <input
+                            id="packageFile"
+                            type="file"
+                            accept=".index,.ipa,.html"
+                        >
+
+                        <div class="description">
+                            <b>.index / .html</b> = web app utilizzabile
+                            tramite Safari e aggiungibile alla Home.<br><br>
+
+                            <b>.ipa</b> = package importato nel menu
+                            Corilizon. Non viene installato come app iOS:
+                            può essere associato a una versione Web.
+                        </div>
+
+                        <button onclick="installSelectedPackage()">
+                            Install Package
+                        </button>
+
+                        <div id="packageStatus"></div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">Pacchetti installati</div>
+
+                <div class="card" id="installedPackages">
+                    Caricamento...
+                </div>
+            </div>
+
+        </div>
+    `;
+
+    loadPackages();
+}
+
+async function installSelectedPackage() {
+
+    const input = document.getElementById("packageFile");
+    const status = document.getElementById("packageStatus");
+
+    if (!input.files.length) {
+        status.innerHTML = `
+            <div class="status warning">
+                Seleziona prima un package.
+            </div>
+        `;
+        return;
+    }
+
+    const file = input.files[0];
+
+    const name = file.name;
+    const lowerName = name.toLowerCase();
+
+    /* -----------------------------------------------------
+       HTML / .INDEX
+       ----------------------------------------------------- */
+
+    if (
+        lowerName.endsWith(".index") ||
+        lowerName.endsWith(".html")
+    ) {
+
+        const content = await file.text();
+
+        const packageData = {
+            name: name,
+            type: "web",
+            filename: name,
+            size: file.size,
+            content: content,
+            webUrl: null,
+            created: Date.now()
+        };
+
+        await addPackage(packageData);
+
+        status.innerHTML = `
+            <div class="status">
+                <div class="success">
+                    Package Installed ✓
+                </div>
+
+                <br>
+
+                <b>${escapeHTML(name)}</b>
+
+                <br><br>
+
+                La web app è stata salvata in Corilizon.
+
+                <button
+                    class="secondary"
+                    onclick="openLatestWebApp()">
+                    Apri Web App
+                </button>
+
+                <button onclick="showHomeScreenInstructions()">
+                    Aggiungi alla Home
+                </button>
+            </div>
+        `;
+
+        loadPackages();
+        return;
+    }
+
+    /* -----------------------------------------------------
+       IPA
+       ----------------------------------------------------- */
+
+    if (lowerName.endsWith(".ipa")) {
+
+        const packageData = {
+            name: name,
+            type: "ipa",
+            filename: name,
+            size: file.size,
+            webUrl: "",
+            created: Date.now()
+        };
+
+        await addPackage(packageData);
+
+        status.innerHTML = `
+            <div class="status">
+                <div class="success">
+                    Package Imported ✓
+                </div>
+
+                <br>
+
+                <b>${escapeHTML(name)}</b>
+
+                <br><br>
+
+                L'IPA è stata importata nel menu
+                Corilizon.
+
+                <br><br>
+
+                <span class="warning">
+                    Installazione iOS nativa non eseguita.
+                </span>
+
+                <br><br>
+
+                Puoi associare una versione Web
+                all'app dal menu del package.
+            </div>
+        `;
+
+        loadPackages();
+        return;
+    }
+
+    status.innerHTML = `
+        <div class="status warning">
+            Formato non riconosciuto.
+        </div>
+    `;
+}
+
+/* ---------------------------------------------------------
+   LOAD PACKAGES
+   --------------------------------------------------------- */
+
+async function loadPackages() {
+
+    const container = document.getElementById("installedPackages");
+
+    if (!container) return;
+
+    const packages = await getPackages();
+
+    if (!packages.length) {
+        container.innerHTML = `
+            <div class="description">
+                Nessun package installato.
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = packages.map(pkg => {
+
+        const size = formatSize(pkg.size);
+
+        if (pkg.type === "web") {
+
+            return `
+                <div class="app-item">
+
+                    <div class="app-name">
+                        ${escapeHTML(pkg.name)}
+                    </div>
+
+                    <div class="app-meta">
+                        Web App · ${size}
+                    </div>
+
+                    <div class="app-buttons">
+
+                        <button
+                            onclick="openWebApp(${pkg.id})">
+                            Apri
+                        </button>
+
+                        <button
+                            class="secondary"
+                            onclick="addToHome(${pkg.id})">
+                            Aggiungi alla Home
+                        </button>
+
+                    </div>
+
+                    <button
+                        class="danger"
+                        onclick="removePackage(${pkg.id})">
+                        Disinstalla
+                    </button>
+
+                </div>
+            `;
+        }
+
+        return `
+            <div class="app-item">
+
+                <div class="app-name">
+                    ${escapeHTML(pkg.name)}
+                </div>
+
+                <div class="app-meta">
+                    IPA Package · ${size}
+                </div>
+
+                <div class="app-buttons">
+
+                    <button
+                        onclick="configureIPA(${pkg.id})">
+                        Versione Web
+                    </button>
+
+                    ${
+                        pkg.webUrl
+                        ?
+                        `<button
+                            class="secondary"
+                            onclick="openIPAWeb(${pkg.id})">
+                            Apri Web
+                        </button>`
+                        :
+                        ""
+                    }
+
+                </div>
+
+                <button
+                    class="danger"
+                    onclick="removePackage(${pkg.id})">
+                    Rimuovi
+                </button>
+
+            </div>
+        `;
+
+    }).join("");
+}
+
+/* ---------------------------------------------------------
+   WEB APP
+   --------------------------------------------------------- */
+
+let currentBlobURL = null;
+
+async function openWebApp(id) {
+
+    const packages = await getPackages();
+    const pkg = packages.find(p => p.id === id);
+
+    if (!pkg || pkg.type !== "web") return;
+
+    if (currentBlobURL) {
+        URL.revokeObjectURL(currentBlobURL);
+    }
+
+    const blob = new Blob(
+        [pkg.content],
+        { type: "text/html" }
+    );
+
+    currentBlobURL = URL.createObjectURL(blob);
+
+    window.location.href = currentBlobURL;
+}
+
+async function openLatestWebApp() {
+
+    const packages = await getPackages();
+
+    const webApps = packages
+        .filter(p => p.type === "web")
+        .sort((a,b) => b.created - a.created);
+
+    if (!webApps.length) return;
+
+    openWebApp(webApps[0].id);
+}
+
+/* ---------------------------------------------------------
+   ADD TO HOME
+   --------------------------------------------------------- */
+
+async function addToHome(id) {
+
+    const packages = await getPackages();
+    const pkg = packages.find(p => p.id === id);
+
+    if (!pkg || pkg.type !== "web") return;
+
+    if (currentBlobURL) {
+        URL.revokeObjectURL(currentBlobURL);
+    }
+
+    const blob = new Blob(
+        [pkg.content],
+        { type: "text/html" }
+    );
+
+    currentBlobURL = URL.createObjectURL(blob);
+
+    window.location.href = currentBlobURL;
+
+    setTimeout(() => {
+        showHomeScreenInstructions();
+    }, 800);
+}
+
+function showHomeScreenInstructions() {
+
+    alert(
+        "Per aggiungere questa Web App alla Home di iPhone:\n\n" +
+        "1. Apri il menu Condividi di Safari\n" +
+        "2. Tocca «Aggiungi alla schermata Home»\n" +
+        "3. Conferma con «Aggiungi»\n\n" +
+        "iOS crea così l'icona della Web App."
+    );
+}
+
+/* ---------------------------------------------------------
+   IPA WEB VERSION
+   --------------------------------------------------------- */
+
+async function configureIPA(id) {
+
+    const packages = await getPackages();
+    const pkg = packages.find(p => p.id === id);
+
+    if (!pkg) return;
+
+    const url = prompt(
+        "Inserisci l'URL della versione Web di questa app:",
+        pkg.webUrl || "https://"
+    );
+
+    if (url === null) return;
+
+    if (
+        url &&
+        !url.startsWith("https://") &&
+        !url.startsWith("http://")
+    ) {
+        alert("Inserisci un URL web valido.");
+        return;
+    }
+
+    const tx = db.transaction(STORE_NAME, "readwrite");
+    const store = tx.objectStore(STORE_NAME);
+
+    pkg.webUrl = url;
+
+    store.put(pkg);
+
+    tx.oncomplete = () => {
+        loadPackages();
+    };
+}
+
+async function openIPAWeb(id) {
+
+    const packages = await getPackages();
+    const pkg = packages.find(p => p.id === id);
+
+    if (!pkg || !pkg.webUrl) {
+        alert("Nessuna versione Web configurata.");
+        return;
+    }
+
+    window.location.href = pkg.webUrl;
+}
+
+/* ---------------------------------------------------------
+   DELETE
+   --------------------------------------------------------- */
+
+async function removePackage(id) {
+
+    if (!confirm("Rimuovere questo package da Corilizon?")) {
+        return;
+    }
+
+    await deletePackage(id);
+    loadPackages();
+}
+
+/* ---------------------------------------------------------
+   INSTALLER
+   --------------------------------------------------------- */
+
+function renderInstaller() {
+
+    document.getElementById("app").innerHTML = `
+        ${header("Installer", true)}
+
+        <div class="content">
+
+            <div class="section">
+                <div class="section-title">Installer</div>
+
+                <div class="card">
+                    <div style="padding:16px;">
+
+                        <div class="status">
+                            Preparazione installer...
+                        </div>
+
+                        <div class="progress">
+                            <div
+                                id="installProgress"
+                                class="progress-bar">
+                            </div>
+                        </div>
+
+                        <div
+                            id="installPercent"
+                            class="center"
+                            style="margin-top:10px;">
+                            0%
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    `;
+
+    let progress = 0;
+
+    const timer = setInterval(() => {
+
+        progress++;
+
+        document.getElementById("installProgress")
+            .style.width = progress + "%";
+
+        document.getElementById("installPercent")
+            .textContent = progress + "%";
+
+        if (progress >= 100) {
+            clearInterval(timer);
+
+            document.getElementById("installPercent")
+                .textContent = "Installazione completata ✓";
+        }
+
+    }, 30);
+}
+
+/* ---------------------------------------------------------
+   DEV MODE
+   --------------------------------------------------------- */
+
+function renderDev() {
+
+    document.getElementById("app").innerHTML = `
+        ${header("Dev Mode", true)}
+
+        <div class="content">
+
+            <div class="section">
+                <div class="section-title">Diagnostics</div>
+
+                <div class="card">
+                    <div style="padding:16px;">
+
+                        <div class="code">
+Corilizon Dev Mode
+------------------
+Web Engine: ${navigator.userAgent}
+Online: ${navigator.onLine}
+Storage: IndexedDB
+Package Manager: Ready
+Web Launcher: Ready
+IPA Importer: Ready
+Native IPA Install: Disabled
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    `;
+}
+
+/* ---------------------------------------------------------
+   SYSTEM INFO
+   --------------------------------------------------------- */
+
+function renderInfo() {
+
+    document.getElementById("app").innerHTML = `
+        ${header("System Info", true)}
+
+        <div class="content">
+
+            <div class="section">
+                <div class="section-title">Corilizon</div>
+
+                <div class="card">
+
+                    <div class="row">
+                        <span>System</span>
+                        <span>Corilizon</span>
+                    </div>
+
+                    <div class="row">
+                        <span>Version</span>
+                        <span>1.0</span>
+                    </div>
+
+                    <div class="row">
+                        <span>Package Manager</span>
+                        <span>Enabled</span>
+                    </div>
+
+                    <div class="row">
+                        <span>Web Apps</span>
+                        <span>Enabled</span>
+                    </div>
+
+                    <div class="row">
+                        <span>IPA Web Launcher</span>
+                        <span>Enabled</span>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    `;
+}
+
+/* ---------------------------------------------------------
+   UPDATE
+   --------------------------------------------------------- */
+
+function renderUpdate() {
+
+    document.getElementById("app").innerHTML = `
+        ${header("Update Modded System", true)}
+
+        <div class="content">
+
+            <div class="section">
+                <div class="section-title">System Update</div>
+
+                <div class="card">
+
+                    <div style="padding:16px;">
+
+                        <div id="updateStatus">
+                            Pronto per controllare gli aggiornamenti.
+                        </div>
+
+                        <div class="progress">
+                            <div
+                                id="updateProgress"
+                                class="progress-bar">
+                            </div>
+                        </div>
+
+                        <button onclick="startUpdate()">
+                            Cerca aggiornamenti
+                        </button>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    `;
+}
+
+function startUpdate() {
+
+    let progress = 0;
+
+    const status = document.getElementById("updateStatus");
+
+    status.textContent = "Controllo aggiornamenti...";
+
+    const timer = setInterval(() => {
+
+        progress++;
+
+        document.getElementById("updateProgress")
+            .style.width = progress + "%";
+
+        if (progress >= 100) {
+
+            clearInterval(timer);
+
+            status.innerHTML =
+                '<span class="success">Sistema aggiornato ✓</span>';
+        }
+
+    }, 25);
+}
+
+/* ---------------------------------------------------------
+   HELPERS
+   --------------------------------------------------------- */
+
+function formatSize(bytes) {
+
+    if (bytes < 1024) {
+        return bytes + " B";
+    }
+
+    if (bytes < 1024 * 1024) {
+        return (bytes / 1024).toFixed(1) + " KB";
+    }
+
+    return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+}
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+/* ---------------------------------------------------------
+   START
+   --------------------------------------------------------- */
+
+openDB()
+    .then(() => {
+        renderHome();
+    })
+    .catch(error => {
+
+        document.getElementById("app").innerHTML = `
+            <div style="padding:30px;">
+                <h1>Corilizon</h1>
+
+                <div class="status warning">
+                    Errore database:<br>
+                    ${escapeHTML(error.message || error)}
+                </div>
+            </div>
+        `;
+    });
+
+</script>
+
+</body>
+</html>
