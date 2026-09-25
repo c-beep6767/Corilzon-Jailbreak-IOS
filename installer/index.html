@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#000000">
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+
+    <title>Colirzon Installer</title>
+</head>
+
+<body>
+
+<main class="page">
+
+    <div class="icon">
+        C
+    </div>
+
+    <h1>Colirzon</h1>
+
+    <p class="subtitle">
+        Colirzon Installer
+    </p>
+
+    <section class="card">
+
+        <h2>Installa Colirzon</h2>
+
+        <p>
+            Aggiungi Colirzon alla schermata Home
+            del tuo dispositivo.
+        </p>
+
+        <button id="installButton">
+            INSTALLA
+        </button>
+
+        <p id="status"></p>
+
+    </section>
+
+</main>
+
+<div id="dialog" class="dialog hidden">
+
+    <div class="dialog-box">
+
+        <div class="small-icon">
+            C
+        </div>
+
+        <h2>Aggiungere Colirzon?</h2>
+
+        <p>
+            Vuoi aggiungere Colirzon alla
+            schermata Home del tuo dispositivo?
+        </p>
+
+        <div class="dialog-buttons">
+
+            <button id="cancelButton"
+                    class="secondary">
+                Annulla
+            </button>
+
+            <button id="confirmButton"
+                    class="primary">
+                Aggiungi
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="installer.js"></script>
+
+</body>
+</html>
