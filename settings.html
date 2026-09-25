@@ -1,0 +1,1514 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width,
+               initial-scale=1.0,
+               viewport-fit=cover">
+
+<meta name="theme-color"
+      content="#f2f2f7">
+
+<link rel="manifest"
+      href="manifest.json">
+
+<title>Impostazioni</title>
+
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+
+    background:#f2f2f7;
+    color:#000;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "Helvetica Neue",
+        Arial,
+        sans-serif;
+}
+
+.page{
+    min-height:100vh;
+    padding-bottom:30px;
+}
+
+.header{
+    padding:58px 20px 14px;
+}
+
+.header h1{
+    margin:0;
+    font-size:34px;
+}
+
+.search{
+    margin:0 16px 20px;
+
+    background:#dedee3;
+
+    border-radius:11px;
+
+    padding:10px 14px;
+}
+
+.search input{
+    width:100%;
+
+    border:0;
+    outline:0;
+
+    background:transparent;
+
+    font-size:17px;
+}
+
+.section{
+    margin:0 16px 20px;
+
+    background:#fff;
+
+    border-radius:13px;
+
+    overflow:hidden;
+}
+
+.item{
+    min-height:58px;
+
+    padding:0 15px;
+
+    display:flex;
+    align-items:center;
+
+    border-bottom:
+        1px solid #dedede;
+
+    cursor:pointer;
+}
+
+.item:last-child{
+    border-bottom:0;
+}
+
+.icon{
+    width:31px;
+    height:31px;
+
+    border-radius:7px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    margin-right:13px;
+
+    background:#3478f6;
+    color:#fff;
+
+    font-weight:600;
+}
+
+.blue{background:#3478f6}
+.green{background:#34c759}
+.red{background:#ff3b30}
+.orange{background:#ff9500}
+.purple{background:#af52de}
+.gray{background:#8e8e93}
+
+.arrow{
+    margin-left:auto;
+
+    color:#999;
+
+    font-size:23px;
+}
+
+.value{
+    margin-left:auto;
+
+    color:#888;
+
+    font-size:14px;
+}
+
+.back{
+    padding:58px 20px 10px;
+
+    color:#007aff;
+
+    cursor:pointer;
+}
+
+.subheader{
+    padding:0 20px 18px;
+}
+
+.subheader h2{
+    margin:0;
+
+    font-size:32px;
+}
+
+.description{
+    color:#777;
+
+    font-size:14px;
+
+    padding:
+        0 16px 15px;
+}
+
+.switch{
+    margin-left:auto;
+
+    width:51px;
+    height:31px;
+
+    border-radius:20px;
+
+    background:#d1d1d6;
+
+    position:relative;
+}
+
+.switch::after{
+    content:"";
+
+    position:absolute;
+
+    width:27px;
+    height:27px;
+
+    top:2px;
+    left:2px;
+
+    border-radius:50%;
+
+    background:#fff;
+
+    transition:.2s;
+}
+
+.switch.on{
+    background:#34c759;
+}
+
+.switch.on::after{
+    left:22px;
+}
+
+.button{
+    width:
+        calc(100% - 32px);
+
+    margin:
+        0 16px 15px;
+
+    padding:14px;
+
+    border:0;
+
+    border-radius:12px;
+
+    background:#007aff;
+
+    color:#fff;
+
+    font-size:16px;
+
+    cursor:pointer;
+}
+
+.fileInput{
+    display:none;
+}
+
+.empty{
+    text-align:center;
+
+    padding:25px;
+
+    color:#888;
+}
+
+.toast{
+    position:fixed;
+
+    left:50%;
+    bottom:25px;
+
+    transform:
+        translateX(-50%);
+
+    background:#222;
+
+    color:#fff;
+
+    padding:
+        11px 18px;
+
+    border-radius:20px;
+
+    opacity:0;
+
+    transition:.2s;
+
+    pointer-events:none;
+}
+
+.toast.show{
+    opacity:1;
+}
+
+.progressBox{
+    display:none;
+
+    margin:
+        0 16px 20px;
+}
+
+.progressBox.show{
+    display:block;
+}
+
+.progressBar{
+    height:8px;
+
+    background:#ddd;
+
+    border-radius:20px;
+
+    overflow:hidden;
+}
+
+.progress{
+    height:100%;
+
+    width:0%;
+
+    background:#007aff;
+}
+
+.progressText{
+    text-align:center;
+
+    color:#777;
+
+    font-size:13px;
+
+    margin-top:7px;
+}
+
+.appCard{
+    margin:
+        15px 0;
+
+    padding:13px;
+
+    border-radius:12px;
+
+    background:#f2f2f7;
+}
+
+.appName{
+    font-weight:600;
+}
+
+.appFile{
+    color:#888;
+
+    font-size:12px;
+
+    margin-top:3px;
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div id="app"></div>
+
+<div
+    id="toast"
+    class="toast">
+</div>
+
+
+<script>
+
+/* =====================================================
+   STATO
+===================================================== */
+
+const state = {
+
+    airplane:false,
+    wifi:true,
+    bluetooth:false,
+    cellular:true,
+    notifications:true,
+    sounds:true,
+    darkMode:false,
+    privacy:false,
+    brightness:75,
+    volume:60
+
+};
+
+
+const app =
+    document.getElementById("app");
+
+const toast =
+    document.getElementById("toast");
+
+
+/* =====================================================
+   UTILITY
+===================================================== */
+
+function showToast(text){
+
+    toast.textContent = text;
+
+    toast.classList.add("show");
+
+    setTimeout(()=>{
+
+        toast.classList.remove("show");
+
+    },1800);
+
+}
+
+
+function icon(text,color){
+
+    return `
+        <div class="icon ${color}">
+            ${text}
+        </div>
+    `;
+
+}
+
+
+function arrow(){
+
+    return `<span class="arrow">›</span>`;
+
+}
+
+
+function escapeHTML(text){
+
+    return text
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* =====================================================
+   STORAGE DELLE APP
+===================================================== */
+
+function getApps(){
+
+    try{
+
+        return JSON.parse(
+            localStorage.getItem(
+                "corilzon_installed_apps"
+            ) || "[]"
+        );
+
+    }catch{
+
+        return [];
+
+    }
+
+}
+
+
+function saveApps(apps){
+
+    localStorage.setItem(
+        "corilzon_installed_apps",
+        JSON.stringify(apps)
+    );
+
+}
+
+
+/* =====================================================
+   HOME
+===================================================== */
+
+function home(){
+
+    app.innerHTML = `
+
+    <div class="page">
+
+        <div class="header">
+            <h1>Impostazioni</h1>
+        </div>
+
+
+        <div class="search">
+
+            🔍
+
+            <input
+                id="search"
+                placeholder="Cerca"
+                oninput="
+                    searchSettings(this.value)
+                "
+            >
+
+        </div>
+
+
+        <div id="content">
+
+            <div class="section">
+
+                <div class="item"
+                     onclick="page('wifi')">
+
+                    ${icon("Wi","blue")}
+
+                    Wi-Fi
+
+                    <span class="value">
+                        Corilzon Wi-Fi
+                    </span>
+
+                    ${arrow()}
+
+                </div>
+
+
+                <div class="item"
+                     onclick="page('bluetooth')">
+
+                    ${icon("B","blue")}
+
+                    Bluetooth
+
+                    ${arrow()}
+
+                </div>
+
+
+                <div class="item"
+                     onclick="page('display')">
+
+                    ${icon("☀","orange")}
+
+                    Schermo e luminosità
+
+                    ${arrow()}
+
+                </div>
+
+            </div>
+
+
+            <div class="section">
+
+                <div class="item"
+                     onclick="page('general')">
+
+                    ${icon("⚙","gray")}
+
+                    Generali
+
+                    ${arrow()}
+
+                </div>
+
+
+                <div class="item"
+                     onclick="page('privacy')">
+
+                    ${icon("P","blue")}
+
+                    Privacy e sicurezza
+
+                    ${arrow()}
+
+                </div>
+
+
+                <div class="item"
+                     onclick="page('apps')">
+
+                    ${icon("A","purple")}
+
+                    App
+
+                    ${arrow()}
+
+                </div>
+
+            </div>
+
+
+            <div class="section">
+
+                <div class="item"
+                     onclick="page('corilzon')">
+
+                    ${icon("C","gray")}
+
+                    Corilzon 🔓
+
+                    ${arrow()}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    `;
+
+}
+
+
+/* =====================================================
+   RICERCA
+===================================================== */
+
+const searchable = [
+
+    ["Wi-Fi","wifi rete internet","wifi","blue"],
+    ["Bluetooth","bluetooth wireless","bluetooth","blue"],
+    ["Schermo e luminosità","schermo luminosità display","display","orange"],
+    ["Generali","generali informazioni","general","gray"],
+    ["Privacy e sicurezza","privacy sicurezza","privacy","blue"],
+    ["App","app applicazioni","apps","purple"],
+    ["Corilzon","jailbreak corilzon","corilzon","gray"],
+    ["IPA Installer","ipa installer package html applicazioni","ipa","blue"]
+
+];
+
+
+function searchSettings(query){
+
+    query =
+        query
+        .trim()
+        .toLowerCase();
+
+
+    const content =
+        document.getElementById(
+            "content"
+        );
+
+
+    if(!query){
+
+        home();
+
+        return;
+
+    }
+
+
+    const results =
+        searchable.filter(item => {
+
+            return (
+                item[0]
+                .toLowerCase()
+                .includes(query)
+
+                ||
+
+                item[1]
+                .toLowerCase()
+                .includes(query)
+            );
+
+        });
+
+
+    if(!results.length){
+
+        content.innerHTML = `
+
+            <div class="section">
+
+                <div class="empty">
+
+                    Nessun risultato per
+                    "${escapeHTML(query)}"
+
+                </div>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    content.innerHTML = `
+
+        <div class="section">
+
+            ${
+                results.map(item=>`
+
+                    <div
+                        class="item"
+                        onclick="page('${item[2]}')">
+
+                        ${icon(item[0][0],item[3])}
+
+                        ${item[0]}
+
+                        ${arrow()}
+
+                    </div>
+
+                `).join("")
+            }
+
+        </div>
+
+    `;
+
+}
+
+
+/* =====================================================
+   NAVIGAZIONE
+===================================================== */
+
+function page(name){
+
+    const pages = {
+
+        wifi:pageWifi,
+        bluetooth:pageBluetooth,
+        display:pageDisplay,
+        general:pageGeneral,
+        privacy:pagePrivacy,
+        apps:pageApps,
+        corilzon:pageCorilzon,
+        ipa:pageIPA
+
+    };
+
+
+    if(pages[name]){
+
+        pages[name]();
+
+    }
+
+}
+
+
+function back(){
+
+    home();
+
+}
+
+
+/* =====================================================
+   PAGINE
+===================================================== */
+
+function pageWifi(){
+
+    app.innerHTML = `
+
+        ${backButton()}
+
+        <div class="subheader">
+            <h2>Wi-Fi</h2>
+        </div>
+
+        <div class="section">
+
+            <div class="item">
+
+                Wi-Fi
+
+                ${switchHTML(
+                    "wifi"
+                )}
+
+            </div>
+
+            <div class="item">
+
+                ${icon("Wi","blue")}
+
+                Corilzon Wi-Fi
+
+                <span class="value">
+                    Connessa
+                </span>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+function pageBluetooth(){
+
+    app.innerHTML = `
+
+        ${backButton()}
+
+        <div class="subheader">
+            <h2>Bluetooth</h2>
+        </div>
+
+        <div class="section">
+
+            <div class="item">
+
+                Bluetooth
+
+                ${switchHTML(
+                    "bluetooth"
+                )}
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+function pageDisplay(){
+
+    app.innerHTML = `
+
+        ${backButton()}
+
+        <div class="subheader">
+            <h2>Schermo e luminosità</h2>
+        </div>
+
+        <div class="section">
+
+            <div class="item">
+
+                Luminosità
+
+                <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value="${state.brightness}"
+                    onchange="
+                        state.brightness=this.value;
+                    "
+                >
+
+            </div>
+
+
+            <div class="item">
+
+                Modalità scura
+
+                ${switchHTML(
+                    "darkMode"
+                )}
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+function pageGeneral(){
+
+    app.innerHTML = `
+
+        ${backButton()}
+
+        <div class="subheader">
+            <h2>Generali</h2>
+        </div>
+
+        <div class="section">
+
+            <div class="item">
+                Informazioni
+                ${arrow()}
+            </div>
+
+            <div class="item">
+                Aggiornamento software
+                ${arrow()}
+            </div>
+
+            <div class="item">
+
+                Spazio iPhone
+
+                <span class="value">
+                    256 GB
+                </span>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+function pagePrivacy(){
+
+    app.innerHTML = `
+
+        ${backButton()}
+
+        <div class="subheader">
+            <h2>Privacy e sicurezza</h2>
+        </div>
+
+        <div class="section">
+
+            <div class="item">
+
+                Localizzazione
+
+                ${switchHTML(
+                    "privacy"
+                )}
+
+            </div>
+
+            <div class="item">
+
+                Fotocamera
+
+                <span class="value">
+                    Consentita
+                </span>
+
+            </div>
+
+            <div class="item">
+
+                Microfono
+
+                <span class="value">
+                    Consentito
+                </span>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =====================================================
+   CORILZON
+===================================================== */
+
+function pageCorilzon(){
+
+    app.innerHTML = `
+
+        ${backButton()}
+
+        <div class="subheader">
+            <h2>✨ Corilzon 🔓</h2>
+        </div>
+
+
+        <div class="section">
+
+            <div class="item">
+
+                Stato
+
+                <span class="value">
+                    Jailbreak Success
+                </span>
+
+            </div>
+
+
+            <div
+                class="item"
+                onclick="page('ipa')">
+
+                ${icon("↓","blue")}
+
+                IPA Installer
+
+                ${arrow()}
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =====================================================
+   PACKAGE INSTALLER
+===================================================== */
+
+let selectedFile = null;
+
+
+function pageIPA(){
+
+    const apps =
+        getApps();
+
+
+    app.innerHTML = `
+
+        ${backButton()}
+
+        <div class="subheader">
+
+            <h2>IPA Installer</h2>
+
+        </div>
+
+
+        <div class="section">
+
+            <div class="item">
+
+                Package Installer
+
+                <span class="value">
+                    Corilzon
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <label
+            for="file"
+            class="button"
+            style="
+                display:block;
+                text-align:center;
+            ">
+
+            Installa applicazione HTML
+
+        </label>
+
+
+        <input
+            id="file"
+            class="fileInput"
+            type="file"
+            accept=".html,text/html"
+            onchange="selectFile(event)"
+        >
+
+
+        <div id="selected"></div>
+
+
+        <div
+            id="progressBox"
+            class="progressBox">
+
+            <div class="progressBar">
+
+                <div
+                    id="progress"
+                    class="progress">
+                </div>
+
+            </div>
+
+            <div
+                id="progressText"
+                class="progressText">
+
+                    Preparazione...
+
+            </div>
+
+        </div>
+
+
+        <div class="section">
+
+            <div class="item">
+
+                Applicazioni installate
+
+                <span class="value">
+                    ${apps.length}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div id="installed">
+
+            ${
+                apps.length
+
+                ?
+
+                `
+                <div class="section">
+
+                    ${
+                        apps.map(
+                            (item,index)=>`
+
+                            <div
+                                class="item"
+                                onclick="
+                                    launchApp(${index})
+                                ">
+
+                                ${icon(
+                                    "A",
+                                    "blue"
+                                )}
+
+                                ${escapeHTML(
+                                    item.name
+                                )}
+
+                                ${arrow()}
+
+                            </div>
+
+                        `
+                        ).join("")
+                    }
+
+                </div>
+                `
+
+                :
+
+                `
+                <div class="empty">
+                    Nessuna app installata.
+                </div>
+                `
+            }
+
+        </div>
+
+    `;
+
+}
+
+
+function selectFile(event){
+
+    const file =
+        event.target.files[0];
+
+
+    if(!file){
+
+        return;
+
+    }
+
+
+    if(
+        !file.name
+            .toLowerCase()
+            .endsWith(".html")
+    ){
+
+        showToast(
+            "Seleziona un file HTML"
+        );
+
+        return;
+
+    }
+
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload = function(e){
+
+        selectedFile = {
+
+            name:file.name,
+
+            html:e.target.result
+
+        };
+
+
+        const appName =
+            file.name
+            .replace(
+                /\.html$/i,
+                ""
+            )
+            .replace(
+                /[-_]/g,
+                " "
+            );
+
+
+        document.getElementById(
+            "selected"
+        ).innerHTML = `
+
+            <div class="appCard">
+
+                <div class="appName">
+
+                    ${escapeHTML(
+                        appName
+                    )}
+
+                </div>
+
+                <div class="appFile">
+
+                    ${escapeHTML(
+                        file.name
+                    )}
+
+                </div>
+
+            </div>
+
+
+            <input
+                id="newAppName"
+                value="${escapeHTML(appName)}"
+                placeholder="Nome app"
+                style="
+                    width:calc(100% - 32px);
+                    margin:0 16px 15px;
+                    padding:12px;
+                    border:1px solid #ddd;
+                    border-radius:10px;
+                "
+            >
+
+
+            <button
+                class="button"
+                onclick="installHTML()">
+
+                Installa
+
+            </button>
+
+        `;
+
+    };
+
+
+    reader.readAsText(file);
+
+}
+
+
+/* =====================================================
+   INSTALLA HTML
+===================================================== */
+
+function installHTML(){
+
+    if(!selectedFile){
+
+        return;
+
+    }
+
+
+    const input =
+        document.getElementById(
+            "newAppName"
+        );
+
+
+    const name =
+        input.value.trim()
+        ||
+        selectedFile.name
+            .replace(
+                /\.html$/i,
+                ""
+            );
+
+
+    const box =
+        document.getElementById(
+            "progressBox"
+        );
+
+    const bar =
+        document.getElementById(
+            "progress"
+        );
+
+    const text =
+        document.getElementById(
+            "progressText"
+        );
+
+
+    box.classList.add("show");
+
+
+    let value = 0;
+
+
+    const timer =
+        setInterval(()=>{
+
+            value += 5;
+
+
+            if(value > 100){
+
+                value = 100;
+
+            }
+
+
+            bar.style.width =
+                value + "%";
+
+
+            text.textContent =
+                "Installazione " +
+                value +
+                "%";
+
+
+            if(value >= 100){
+
+                clearInterval(timer);
+
+
+                const apps =
+                    getApps();
+
+
+                apps.push({
+
+                    name:name,
+
+                    fileName:
+                        selectedFile.name,
+
+                    html:
+                        selectedFile.html
+
+                });
+
+
+                saveApps(apps);
+
+
+                text.textContent =
+                    "Installazione completata ✓";
+
+
+                setTimeout(()=>{
+
+                    showToast(
+                        name +
+                        " installata ✓"
+                    );
+
+                    pageIPA();
+
+                },700);
+
+            }
+
+        },100);
+
+}
+
+
+/* =====================================================
+   AVVIA APP INSTALLATA
+===================================================== */
+
+function launchApp(index){
+
+    const apps =
+        getApps();
+
+
+    const selected =
+        apps[index];
+
+
+    if(!selected){
+
+        return;
+
+    }
+
+
+    const win =
+        window.open(
+            "",
+            "_blank"
+        );
+
+
+    if(!win){
+
+        showToast(
+            "Impossibile aprire l'app"
+        );
+
+        return;
+
+    }
+
+
+    win.document.open();
+
+    win.document.write(
+        selected.html
+    );
+
+    win.document.close();
+
+}
+
+
+/* =====================================================
+   BOTTONI / SWITCH
+===================================================== */
+
+function backButton(){
+
+    return `
+
+        <div
+            class="back"
+            onclick="back()">
+
+            ‹ Indietro
+
+        </div>
+
+    `;
+
+}
+
+
+function switchHTML(name){
+
+    return `
+
+        <div
+            class="switch ${
+                state[name]
+                ? "on"
+                : ""
+            }"
+            onclick="
+                event.stopPropagation();
+                toggle('${name}');
+            ">
+        </div>
+
+    `;
+
+}
+
+
+function toggle(name){
+
+    state[name] =
+        !state[name];
+
+
+    showToast(
+        state[name]
+        ? "Attivato"
+        : "Disattivato"
+    );
+
+
+    home();
+
+}
+
+
+/* =====================================================
+   AVVIO
+===================================================== */
+
+home();
+
+</script>
+
+</body>
+</html>
